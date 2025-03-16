@@ -48,7 +48,9 @@ CREATE TABLE public.cargo (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     paint_time integer NOT NULL,
     type public.cargo_type NOT NULL,
-    status public.cargo_status DEFAULT 'shipping'::public.cargo_status NOT NULL
+    status public.cargo_status DEFAULT 'shipping'::public.cargo_status NOT NULL,
+    name character varying(255),
+    description character varying(255)
 );
 
 
@@ -114,4 +116,6 @@ INSERT INTO public.schema_migrations (version) VALUES
     ('20250202090306'),
     ('20250202090911'),
     ('20250202113745'),
-    ('20250211075035');
+    ('20250211075035'),
+    ('20250316071646'),
+    ('20250316072934');
