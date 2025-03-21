@@ -16,6 +16,8 @@ pub struct Cargo {
     pub paint_time: i32,
     pub r#type: CargoType,
     pub status: CargoStatus,
+    pub name: Option<String>,
+    pub description: Option<String>,
 }
 
 #[typeshare]
@@ -27,7 +29,7 @@ pub struct CargoInput {
 }
 
 #[typeshare]
-#[derive(TryFromMultipart, Serialize)]
+#[derive(TryFromMultipart, Serialize, std::fmt::Debug)]
 #[serde(rename_all = "camelCase")]
 #[try_from_multipart(rename_all = "camelCase")]
 pub struct CargoRequest {
@@ -37,12 +39,49 @@ pub struct CargoRequest {
     pub file: Bytes,
 }
 
+#[typeshare]
+#[derive(Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct CargoTextInfoRequest {
+    pub id: Uuid,
+    pub name: String,
+    pub description: String,
+}
+
 impl Cargo {
     pub async fn get_20(pool: &PgPool) -> Vec<Self> {
         sqlx::query_as("SELECT * FROM cargo ORDER BY created_at DESC LIMIT 20")
             .fetch_all(pool)
             .await
             .unwrap_or_default()
+    }
+
+    pub async fn set_pending_by_id(
+        pool: &PgPool,
+        id: Uuid,
+        value: bool,
+    ) -> Result<&str, sqlx::Error> {
+        sqlx::query!("UPDATE cargo SET pending = $1 WHERE id = $2", value, id)
+            .execute(pool)
+            .await
+            .map(|_| "Ok")
+    }
+
+    pub async fn get_un_docs(pool: &PgPool) -> Vec<Self> {
+        sqlx::query_as(
+            "SELECT * FROM cargo WHERE name is NULL AND description is NULL AND pending = false",
+        )
+        .fetch_all(pool)
+        .await
+        .unwrap_or_default()
+    }
+
+    pub async fn get_by_id(pool: &PgPool, id: Uuid) -> Option<Self> {
+        sqlx::query_as("SELECT * FROM cargo WHERE id = $1")
+            .bind(id)
+            .fetch_one(pool)
+            .await
+            .ok()
     }
 
     pub async fn get_today(pool: &PgPool) -> Vec<Self> {
@@ -71,6 +110,27 @@ impl Cargo {
         .await
         .unwrap_or_default()
         .len()
+    }
+
+    pub async fn update_text_info(
+        pool: &PgPool,
+        info: CargoTextInfoRequest,
+    ) -> Result<String, sqlx::Error> {
+        let CargoTextInfoRequest {
+            name,
+            description,
+            id,
+        } = &info;
+
+        sqlx::query!(
+            "UPDATE cargo SET name = $1, description = $2 WHERE id = $3",
+            name,
+            description,
+            id
+        )
+        .execute(pool)
+        .await
+        .map(|_| "ok".to_string())
     }
 
     pub async fn create(pool: &PgPool, input: CargoInput) -> Self {
