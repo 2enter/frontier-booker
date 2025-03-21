@@ -50,7 +50,8 @@ CREATE TABLE public.cargo (
     type public.cargo_type NOT NULL,
     status public.cargo_status DEFAULT 'shipping'::public.cargo_status NOT NULL,
     name character varying(255),
-    description character varying(255)
+    description character varying(255),
+    pending boolean DEFAULT false
 );
 
 
@@ -118,4 +119,6 @@ INSERT INTO public.schema_migrations (version) VALUES
     ('20250202113745'),
     ('20250211075035'),
     ('20250316071646'),
-    ('20250316072934');
+    ('20250316072934'),
+    ('20250320094612'),
+    ('20250320095456');
