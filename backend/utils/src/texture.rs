@@ -1,7 +1,8 @@
 use bytes::Bytes;
 use image::{GenericImageView, ImageBuffer, ImageFormat, Rgb};
 
-const BG_COLOR: Rgb<u8> = Rgb([255, 222, 193]);
+const BG_COLOR: Rgb<u8> = Rgb([172, 138, 106]);
+// "#AC8A6A"
 
 pub fn generate_texture(id: &str, bytes: &Bytes, path: &str) {
     let mut img = image::load_from_memory(bytes).unwrap();
