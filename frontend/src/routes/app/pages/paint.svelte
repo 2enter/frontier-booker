@@ -281,7 +281,7 @@
 
 <div
 	class="full-screen center-content pointer-events-none bg-contain bg-center bg-no-repeat"
-	style:background-image="url(/cargoes/{inputState.cargoType}_canva.webp)"
+	style:background-image="url(/cargoes/{inputState.cargoType}_dotted.webp)"
 ></div>
 
 {#if showManual}
