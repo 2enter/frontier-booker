@@ -40,7 +40,7 @@ async fn gen_and_update_cargo_text_info_by_id(app_state: &AppState, id: Uuid) {
         let _ = Cargo::set_pending_by_id(&app_state.pool, id, true).await;
         let base64_img = base64_encode(&data);
         let api_key = app_state.config.anthropic_api_key.as_str();
-        let result = gen_cargo_text_info(api_key, base64_img).await;
+        let result = gen_cargo_text_info(api_key, &base64_img).await;
         match result {
             Ok((name, description)) => {
                 info!("new text generated:\nname: {name}\ndescription: {description}");
