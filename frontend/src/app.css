@@ -1,4 +1,4 @@
-@import '@fontsource/fira-code';
+@import url('https://fonts.googleapis.com/css2?family=DotGothic16&display=swap');
 
 @tailwind base;
 @tailwind components;
