@@ -37,7 +37,8 @@
 			const input = { paintTime, cargoType, file };
 
 			// upload cargo image
-			const { data: result } = await postCargo(input);
+			const { data: result, error } = await postCargo(input);
+			console.error(error);
 
 			if (!result) return '資料處理錯誤';
 
@@ -46,6 +47,8 @@
 		}
 	});
 </script>
+
+<link rel="preload" as="image" href="/ui/buttons/upload.webp" />
 
 {#if !inputState.result}
 	<img src={inputState.resultImgUrl} alt="" class="pointer-events-none fixed h-auto w-full" />

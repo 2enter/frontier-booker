@@ -23,6 +23,8 @@ export interface Cargo {
 	paintTime: number;
 	type: CargoType;
 	status: CargoStatus;
+	name: string | null;
+	description: string | null;
 }
 
 export interface CargoInput {
@@ -35,4 +37,3 @@ export interface CargoRequest {
 	paintTime: number;
 	file: Blob;
 }
-

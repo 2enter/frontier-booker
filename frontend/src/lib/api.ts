@@ -27,4 +27,8 @@ async function getTodayCargoes() {
 	return api.fetch<Cargo[]>({ url: '/api/cargo/today' });
 }
 
-export { getCargoes, getNews, getSysTemp, getTodayCargoes, postCargo };
+async function getCargoById(id: string) {
+	return api.fetch<Cargo>({ url: `/api/cargo/${id}` });
+}
+
+export { getCargoes, getNews, getSysTemp, getTodayCargoes, postCargo, getCargoById };

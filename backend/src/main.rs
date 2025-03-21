@@ -1,3 +1,4 @@
+mod claude;
 mod config;
 mod cron;
 mod handlers;

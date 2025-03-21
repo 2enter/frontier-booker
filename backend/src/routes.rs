@@ -4,6 +4,7 @@ use crate::handlers::redirect;
 use crate::handlers::sys_info::get_temperature;
 use crate::handlers::ws::ws_handler;
 use crate::state::AppState;
+use axum::extract::DefaultBodyLimit;
 use axum::routing::{any, get, post};
 use axum::Router;
 use tower_http::services::ServeDir;
@@ -17,11 +18,14 @@ pub fn get_routes(state: AppState) -> Router {
                 .nest(
                     "/cargo",
                     Router::new()
+                        .route("/", post(send_cargo).get(get_cargoes))
+                        .route("/{id}", get(get_cargo_by_id))
                         .route("/today", get(get_today_cargoes))
-                        .route("/", post(send_cargo).get(get_cargoes)),
+                        .route("/info", post(update_cargo_text_info)),
                 )
                 .route("/news", get(get_news))
                 .route("/sys-temp", get(get_temperature))
+                .route("/cargo-info", post(update_cargo_text_info))
                 .nest(
                     "/render",
                     Router::new()
@@ -41,5 +45,6 @@ pub fn get_routes(state: AppState) -> Router {
             "{}/frontend/build",
             state.config.root_dir
         )))
+        .layer(DefaultBodyLimit::max(5000000000000))
         .with_state(state)
 }

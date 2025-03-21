@@ -8,6 +8,7 @@ pub struct Config {
     pub port: u16,
     pub host: String,
     pub root_dir: String,
+    pub anthropic_api_key: String,
 }
 
 impl Config {
@@ -16,12 +17,14 @@ impl Config {
         let wd_port = get_env("CHROMEDRIVER_PORT");
         let port = get_env("BACKEND_PORT");
         let host = get_env("BACKEND_HOST");
+        let anthropic_api_key = get_env("ANTHROPIC_API_KEY");
         let root_dir = get_root_dir();
 
         println!("configuration initialized: {host}:{port}, db: {database_url}, wd: {wd_port}, root: {root_dir}");
 
         Self {
             database_url,
+            anthropic_api_key,
             port: port.parse().unwrap_or(3000),
             wd_port: wd_port.parse().unwrap_or(4000),
             host,
