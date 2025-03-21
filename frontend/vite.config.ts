@@ -13,6 +13,7 @@ console.log('API base url:', API_BASE_URL);
 export default defineConfig({
 	plugins: [sveltekit()],
 	server: {
+		host: '0.0.0.0',
 		proxy: {
 			'/api': {
 				target: API_BASE_URL,
