@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
+	import { LoaderPinwheel } from '@lucide/svelte';
 	import { navigating } from '$app/state';
 	import { dev } from '$app/environment';
 	import { FullscreenChecker } from '@2enter/web-kit/components';
@@ -74,8 +75,11 @@
 </dialog>
 
 {#if sysState.processing || navigating.to}
-	<div transition:fade class="full-screen center-content z-[100000] bg-black/10 backdrop-blur-sm">
-		<i class="fa-solid fa-loader fa-duotone animate-spin text-8xl"></i>
+	<div
+		transition:fade
+		class="full-screen center-content z-[10000] bg-black/10 text-black backdrop-blur-sm"
+	>
+		<LoaderPinwheel size="120" strokeWidth="1" class="animate-spin overflow-hidden" />
 	</div>
 {/if}
 
