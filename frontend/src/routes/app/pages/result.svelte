@@ -15,6 +15,7 @@
 	const textureLoader = new THREE.TextureLoader();
 	const scene = new THREE.Scene();
 
+	let cargoModel: THREE.Object3D;
 	let threeDom = $state<HTMLDivElement>();
 	let frame = 0;
 	let textInfo = $state<{ name: string; description: string } | null>();
@@ -63,7 +64,7 @@
 		texture.flipY = false;
 
 		const material = new THREE.MeshToonMaterial({ map: texture });
-		const cargoModel = model.scene.children[0];
+		cargoModel = model.scene.children[0];
 
 		if ('material' in cargoModel) cargoModel.material = material;
 
@@ -71,17 +72,48 @@
 
 		camera.position.z = 3.6;
 		camera.position.y = 1.5;
+
 		camera.lookAt(0, 0, 0);
+
+		cargoModel.rotation.y = 90;
+
+		const randomness = {
+			x: Math.random() * 0.4 - 0.2,
+			y: Math.random() * 0.2 - 0.1,
+			z: Math.random() * 0.05 - 0.025
+		};
 
 		function animate() {
 			setTimeout(() => {
 				frame = requestAnimationFrame(animate);
 				renderer.render(scene, camera);
-				cargoModel.rotation.y += 1 / FRAME_RATE;
+				for (const dir of ['x', 'y', 'x'] as const) {
+					if (!lastTouch) cargoModel.rotation[dir] += randomness[dir] / FRAME_RATE;
+					// cargoModel.rotation[dir] = cargoModel.rotation[dir] % (Math.PI * 2);
+				}
 			}, 1000 / FRAME_RATE);
 		}
 		animate();
 	});
+
+	let lastTouch: Touch | null = null;
+
+	function onTouchMove(e: TouchEvent) {
+		const currentTouch = e.touches[0];
+		if (lastTouch && cargoModel) {
+			const touchDiff = [
+				currentTouch.clientX - lastTouch.clientX,
+				currentTouch.clientY - lastTouch.clientY
+			] as const;
+
+			// do something
+			cargoModel.rotation.y += touchDiff[0] / 200;
+			cargoModel.rotation.x += touchDiff[1] / 1000;
+			// cargoModel.rotation.z += touchDiff[0] / 10000;
+			console.log(touchDiff);
+		}
+		lastTouch = e.touches[0];
+	}
 
 	onDestroy(() => {
 		scene.clear();
@@ -89,7 +121,12 @@
 	});
 </script>
 
-<div bind:this={threeDom} class="full-screen z-[1000]"></div>
+<div
+	bind:this={threeDom}
+	class="full-screen z-[1000]"
+	ontouchmove={onTouchMove}
+	ontouchend={() => (lastTouch = null)}
+></div>
 
 <div
 	class="font-dot-gothic absolute top-40 z-[1200] flex h-fit w-[90%] flex-col gap-2 rounded-xl p-3 text-center text-3xl text-black"
@@ -97,7 +134,7 @@
 	{#if textInfo}
 		{@const { name, description } = textInfo}
 		<h1 class="text-4xl font-bold">『{name}』</h1>
-		<p>{description}</p>
+		<p class="text-[21px] leading-tight">{description}</p>
 	{:else}
 		pending
 	{/if}
