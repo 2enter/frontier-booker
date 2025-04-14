@@ -37,6 +37,12 @@
 			launchCountDown = getLaunchCountDown();
 		}, 1234);
 
+		window.oncontextmenu = (e) => {
+			e.preventDefault();
+			e.stopPropagation();
+			return false;
+		};
+
 		return {
 			destroy() {
 				clearInterval(interval);
