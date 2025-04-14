@@ -10,7 +10,7 @@ export const imageModules = import.meta.glob(
 	}
 ) as Record<string, { default: typeof Image }>
 
+
 export function getImageSrc(src: string) {
 	return imageModules[`.${src}`].default;
 }
-console.log(imageModules)

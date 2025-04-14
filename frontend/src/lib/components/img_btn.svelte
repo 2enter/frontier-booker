@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getImageSrc, imageModules } from '@/assets/images';
+	import { getImageSrc } from '@/assets/images';
 
 	interface Props {
 		src: string;

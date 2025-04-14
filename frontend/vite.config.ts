@@ -1,7 +1,8 @@
+import dotenv from 'dotenv';
+
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
 import { enhancedImages } from '@sveltejs/enhanced-img'
-import dotenv from 'dotenv';
 
 dotenv.config({ path: '../.env' });
 
@@ -21,6 +22,6 @@ export default defineConfig({
 				changeOrigin: true
 			}
 		},
-		port: 5173
+		port: 5173,
 	}
 });

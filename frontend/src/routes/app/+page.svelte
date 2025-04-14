@@ -3,7 +3,6 @@
 	import { Pages } from './pages';
 	import { fade } from 'svelte/transition';
 	import { imageModules } from '@/assets/images';
-	import { entries } from '../render/news/[num]/+page';
 
 	const sysState = getSysState();
 
