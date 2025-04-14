@@ -6,8 +6,14 @@
 	import { dev } from '$app/environment';
 	import { FullscreenChecker } from '@2enter/web-kit/components';
 
+	import DistanceImage from '@/assets/ui/launch_time/distance.webp?enhanced';
+	import MinuteImage from '@/assets/ui/launch_time/minute.webp?enhanced';
+	import SecondImage from '@/assets/ui/launch_time/second.webp?enhanced';
+	import LogoImage from '@/assets/ui/texts/2enter.webp?enhanced';
+
 	import { getSysState } from '@/states';
 	import { getLaunchCountDown } from '@/time';
+	import { getImageSrc } from '@/assets/images';
 
 	const sysState = getSysState();
 
@@ -35,28 +41,28 @@
 	});
 </script>
 
-<div class="center-content fixed top-1 z-[1000] w-full *:h-8">
+<div class="center-content fixed top-1 z-[1000] w-full px-40">
 	{#if launchCountDown}
-		<img src="/ui/launch_time/distance.webp" alt="" />
-		{#each launchCountDown.min.toString() as digit}
-			<img class="py-2" src="/ui/launch_time/numbers/{digit}.webp" alt="" />
+		<enhanced:img src={DistanceImage} alt="" />
+		{#each ['min', 'sec'] as const as unit}
+			{@const UnitImage = unit === 'min' ? MinuteImage : SecondImage}
+			{#each launchCountDown[unit].toString() as digit}
+				<enhanced:img
+					class="py-2"
+					src={getImageSrc(`/ui/launch_time/numbers/${digit}.webp`)}
+					alt=""
+				/>
+			{/each}
+			<enhanced:img src={UnitImage} alt="" />
 		{/each}
-		<img src="/ui/launch_time/minute.webp" alt="" />
-		{#each launchCountDown.sec.toString() as digit}
-			<img class="py-2" src="/ui/launch_time/numbers/{digit}.webp" alt="" />
-		{/each}
-		<img src="/ui/launch_time/second.webp" alt="" />
 	{/if}
 </div>
 
 <div class="center-content fixed bottom-3 z-[1000] w-full">
-	<img src="/ui/texts/2enter.webp" class="h-10" alt="" />
+	<enhanced:img src={LogoImage} class="h-16 w-auto" alt="" />
 </div>
 
-<div
-	class="full-screen center-content bg-cover bg-center bg-no-repeat"
-	style:background-image="url({sysState.bg})"
->
+<div class="full-screen center-content bg-cover bg-center bg-no-repeat bg-{sysState.bgNum}">
 	{@render children()}
 </div>
 
@@ -86,6 +92,17 @@
 {#if dev}
 	<button
 		class="btn btn-secondary fixed left-0 top-0 z-[3000]"
-		onclick={() => window.location.reload()}>reload</button
+		onclick={() => window.location.reload()}
 	>
+		reload
+	</button>
 {/if}
+
+<style>
+	.bg-0 {
+		background-image: url('$lib/assets/ui/layouts/paper.webp');
+	}
+	.bg-1 {
+		background-image: url('$lib/assets/ui/layouts/factory_bg.webp');
+	}
+</style>

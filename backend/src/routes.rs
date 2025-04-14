@@ -7,6 +7,7 @@ use crate::state::AppState;
 use axum::extract::DefaultBodyLimit;
 use axum::routing::{any, get, post};
 use axum::Router;
+use tower_http::compression::CompressionLayer;
 use tower_http::services::ServeDir;
 use tower_http::trace::TraceLayer;
 
@@ -46,5 +47,6 @@ pub fn get_routes(state: AppState) -> Router {
             state.config.root_dir
         )))
         .layer(DefaultBodyLimit::max(5000000000000))
+        .layer(CompressionLayer::new().br(true).gzip(true))
         .with_state(state)
 }

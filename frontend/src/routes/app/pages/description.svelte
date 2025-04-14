@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
 	import { getSysState } from '@/states';
+	import { getImageSrc } from '@/assets/images';
 
 	const sysState = getSysState();
 
@@ -24,7 +25,12 @@
 </script>
 
 {#each { length: line + 1 } as _, i}
-	<img in:fade src="/ui/texts/description_page/{i}.webp" class="fixed w-11/12" alt={i.toString()} />
+	<enhanced:img
+		in:fade
+		src={getImageSrc(`/ui/texts/description_page/${i}.webp`)}
+		class="full-screen m-auto"
+		alt={i.toString()}
+	/>
 {/each}
 
 <button

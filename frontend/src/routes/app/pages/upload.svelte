@@ -1,6 +1,8 @@
 <script lang="ts">
 	import type { CargoInput } from '@/types/model';
-	import { ImgBtn } from '@2enter/web-kit/components';
+	import LightBeamImage from '@/assets/ui/animations/light_beam.webp';
+
+	import { ImgBtn } from '@/components';
 	import { makeSubmit } from '@2enter/web-kit/browser';
 	import { getInputState, getSysState } from '@/states';
 	import { postCargo } from '@/api';
@@ -48,13 +50,13 @@
 	});
 </script>
 
-<link rel="preload" as="image" href="/ui/buttons/upload.webp" />
+<link rel="preload" as="image" href={LightBeamImage} />
 
 {#if !inputState.result}
 	<img src={inputState.resultImgUrl} alt="" class="pointer-events-none fixed h-auto w-full" />
 	{#if !sysState.processing}
-		<ImgBtn src="/ui/buttons/upload.webp" class="z-[2000]" onclick={submit} />
+		<ImgBtn src="/ui/buttons/upload.webp" class="z-[2000] w-2/3" onclick={submit} />
 	{/if}
 {:else}
-	<img use:lightBeam class="h-[50vh] w-screen" src="/ui/animations/light_beam.webp" alt="" />
+	<img use:lightBeam class="h-[50vh] w-screen" src={LightBeamImage} alt="" />
 {/if}

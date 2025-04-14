@@ -6,13 +6,13 @@ class SysState {
 	pageNum = $state<PageNum>(0);
 	dialog = $state<HTMLDialogElement>();
 
-	bg = $derived.by(() => {
+	bgNum = $derived.by(() => {
 		switch (this.pageNum) {
 			case 0:
 			case 3:
-				return '/ui/layouts/paper.webp';
+				return 0;
 			default:
-				return '/ui/layouts/factory_bg.webp';
+				return 1;
 		}
 	});
 

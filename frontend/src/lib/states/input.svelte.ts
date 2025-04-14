@@ -5,7 +5,7 @@ import { CargoStatus, CargoType } from '@/types/model'
 import { getContext, setContext } from 'svelte';
 import axios from 'axios';
 
-const _TEST_CARGO = {
+const TEST_CARGO = {
 	id: "07af5db7-1ccd-42e3-8882-6fac04c5fb3b",
 	type: CargoType.Cake,
 	createdAt: new Date(),
@@ -19,6 +19,7 @@ class InputState {
 	cargoType = $state<ParseEnum<CargoType> | null>(null);
 	drawDuration = $state(0);
 
+	// result = $state<Cargo | null>(TEST_CARGO);
 	result = $state<Cargo | null>();
 
 	resultImgUrl = $state<string | null>(null);

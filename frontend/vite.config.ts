@@ -1,5 +1,6 @@
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
+import { enhancedImages } from '@sveltejs/enhanced-img'
 import dotenv from 'dotenv';
 
 dotenv.config({ path: '../.env' });
@@ -11,7 +12,7 @@ const API_BASE_URL = `http://${BACKEND_HOST ?? 'localhost'}:${BACKEND_PORT ?? 30
 console.log('API base url:', API_BASE_URL);
 
 export default defineConfig({
-	plugins: [sveltekit()],
+	plugins: [sveltekit(), enhancedImages()],
 	server: {
 		host: '0.0.0.0',
 		proxy: {

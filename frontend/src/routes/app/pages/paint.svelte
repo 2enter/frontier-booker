@@ -6,10 +6,12 @@
 	import { onMount } from 'svelte';
 	import { slide, fly, fade } from 'svelte/transition';
 	import { randomItem } from '@2enter/web-kit/calc';
-	import { ImgBtn } from '@2enter/web-kit/components';
+	import { ImgBtn } from '@/components';
 	import { dexie } from '@/dexie';
 	import { COLORS } from '@/config';
 	import { getInputState, getSysState } from '@/states';
+	import { getImageSrc } from '@/assets/images';
+	import ManualImage from '@/assets/ui/paint/manual.webp?enhanced';
 
 	const [inputState, sysState] = [getInputState(), getSysState()];
 
@@ -209,30 +211,22 @@
 
 <div
 	in:slide={{ axis: 'y' }}
-	class="fixed bottom-0 flex h-[12vh] w-screen items-center justify-evenly bg-cover bg-center bg-no-repeat px-10 py-5"
-	style:background-image="url(/ui/paint/tools.webp)"
+	class="tools-bg fixed bottom-0 flex h-[12vh] w-screen items-center justify-evenly bg-cover bg-center bg-no-repeat px-10 py-5 *:w-1/6"
 >
 	{#each TOOLS as tool}
 		<input id={tool} type="radio" value={tool} hidden bind:group={selectedTool} />
 		<label
 			for={tool}
 			class="bg-contain bg-center bg-no-repeat"
-			style:background-image="url({tool === selectedTool ? '/ui/paint/frame.webp' : ''})"
+			class:selected-tool={tool === selectedTool}
 			ontouchstart={noDraw}
 		>
-			<img src="/ui/paint/{tool}.webp" class="" alt="" />
+			<enhanced:img src={getImageSrc(`/ui/paint/${tool}.webp`)} class="" alt="" />
 		</label>
 	{/each}
-	<ImgBtn src="/ui/paint/undo.webp" class="" onclick={() => modifyVersion(-1)} ontouchstart={noDraw}
-	></ImgBtn>
-	<ImgBtn src="/ui/paint/redo.webp" class="" onclick={() => modifyVersion(1)} ontouchstart={noDraw}
-	></ImgBtn>
-	<ImgBtn
-		src="/ui/paint/help.webp"
-		class=""
-		onclick={() => (showManual = true)}
-		ontouchstart={noDraw}
-	></ImgBtn>
+	{#each [['undo', () => modifyVersion(-1)], ['redo', () => modifyVersion(1)], ['help', () => (showManual = true)]] as const as [name, action]}
+		<ImgBtn src="/ui/paint/{name}.webp" onclick={action} ontouchstart={noDraw} />
+	{/each}
 </div>
 
 {#if showUI}
@@ -260,15 +254,12 @@
 					class="pointer-events-auto transition-transform duration-100"
 					style:transform="scale({name === color ? 1.3 : 1})"
 				>
-					<img class="size-18" src="/ui/paint/colors/{name}.webp" alt="" />
+					<enhanced:img class="size-18" src={getImageSrc(`/ui/paint/colors/${name}.webp`)} alt="" />
 				</label>
 			{/each}
 		</div>
 
-		<div
-			class="center-content mt-10 w-40 bg-cover bg-no-repeat"
-			style:background-image="url(/ui/paint/bold/bg.webp)"
-		>
+		<div class="center-content bold-bg mt-10 w-40 bg-cover bg-no-repeat">
 			<ImgBtn
 				src="/ui/paint/bold/{selectedWeight + 1}.webp"
 				ontouchstart={noDraw}
@@ -279,18 +270,36 @@
 	</div>
 {/if}
 
-<div
-	class="full-screen center-content pointer-events-none bg-contain bg-center bg-no-repeat"
-	style:background-image="url(/cargoes/{inputState.cargoType}_dotted.webp)"
-></div>
+<div class="full-screen center-content pointer-events-none">
+	<enhanced:img
+		src={getImageSrc(`/cargoes/${inputState.cargoType}_dotted.webp`)}
+		class="pointer-events-none w-full"
+		alt=""
+	/>
+</div>
 
 {#if showManual}
 	<button
+		aria-label="button"
 		transition:fade
 		class="full-screen center-content z-[2000] bg-black/60 px-8"
 		ontouchstart={noDraw}
 		onclick={() => (showManual = false)}
 	>
-		<img src="/ui/paint/manual.webp" alt="" />
+		<enhanced:img src={ManualImage} alt="" />
 	</button>
 {/if}
+
+<style>
+	.selected-tool {
+		background-image: url('@/assets/ui/paint/frame.webp');
+	}
+
+	.tools-bg {
+		background-image: url('@/assets/ui/paint/tools.webp');
+	}
+
+	.bold-bg {
+		background-image: url('@/assets/ui/paint/bold/bg.webp');
+	}
+</style>
