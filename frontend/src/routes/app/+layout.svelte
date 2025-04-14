@@ -4,7 +4,7 @@
 	import { LoaderPinwheel } from '@lucide/svelte';
 	import { navigating } from '$app/state';
 	import { dev } from '$app/environment';
-	import { FullscreenChecker } from '@2enter/web-kit/components';
+	// import { FullscreenChecker } from '@2enter/web-kit/components';
 
 	import DistanceImage from '@/assets/ui/launch_time/distance.webp?enhanced';
 	import MinuteImage from '@/assets/ui/launch_time/minute.webp?enhanced';
@@ -92,7 +92,7 @@
 	{@render children()}
 </div>
 
-<FullscreenChecker />
+<!-- <FullscreenChecker /> -->
 
 <dialog bind:this={sysState.dialog} class="modal modal-middle">
 	<div class="modal-box">
