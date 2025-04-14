@@ -84,7 +84,7 @@
 	{/if}
 </div>
 
-<div class="center-content fixed bottom-3 z-[1000] w-full">
+<div class="center-content pointer-events-none fixed bottom-3 z-[1000] w-full">
 	<enhanced:img src={LogoImage} class="h-16 w-auto" alt="" />
 </div>
 
