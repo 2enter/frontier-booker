@@ -67,7 +67,7 @@
 	}
 </script>
 
-<div class="center-content fixed top-1 z-[1000] w-full px-40">
+<div class="center-content fixed top-1 z-[1000] w-full px-40 *:h-8">
 	{#if launchCountDown}
 		<enhanced:img src={DistanceImage} alt="" />
 		{#each ['min', 'sec'] as const as unit}
