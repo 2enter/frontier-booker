@@ -1,0 +1,27 @@
+{
+	"name": "Frontier Builder #Dicitonary",
+	"short_name": "FTR_BDR_DICT",
+	"start_url": "/app",
+	"display": "fullscreen",
+	"prefer_related_applications": false,
+	"background_color": "#17191c",
+	"theme_color": "#ff3f20",
+	"description": "Frontier Booker by 2ENTER studio",
+	"icons": [
+		{
+			"src": "pwa-64x64.png",
+			"type": "image/png",
+			"sizes": "64x64"
+		},
+		{
+			"src": "pwa-192x192.png",
+			"type": "image/png",
+			"sizes": "192x192"
+		},
+		{
+			"src": "pwa-512x512.png",
+			"type": "image/png",
+			"sizes": "512x512"
+		}
+	]
+}

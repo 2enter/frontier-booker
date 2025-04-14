@@ -24,6 +24,10 @@
 	});
 
 	onMount(async () => {
+		setInterval(() => {
+			detectSWUpdate();
+		}, 20000);
+
 		if (dev) {
 			const eruda = (await import('eruda')).default;
 			eruda.init();
@@ -39,6 +43,22 @@
 			}
 		};
 	});
+
+	async function detectSWUpdate() {
+		const registration = await navigator.serviceWorker.ready;
+
+		registration.addEventListener('updatefound', () => {
+			const newSW = registration.installing;
+			newSW?.addEventListener('statechange', () => {
+				if (newSW.state === 'installed') {
+					if (confirm('New update available! Reload to update?')) {
+						newSW.postMessage({ type: 'SKIP_WAITING' });
+						window.location.reload();
+					}
+				}
+			});
+		});
+	}
 </script>
 
 <div class="center-content fixed top-1 z-[1000] w-full px-40">

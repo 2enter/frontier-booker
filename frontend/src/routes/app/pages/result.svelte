@@ -160,8 +160,7 @@
 		class="fixed bottom-12 z-[3000] w-56"
 		src="/ui/buttons/restart.webp"
 		onclick={() => {
-			inputState.reset();
-			sysState.routeTo(0);
+			window.location.reload();
 		}}
 	/>
 {/if}
