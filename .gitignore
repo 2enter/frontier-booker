@@ -1,6 +1,7 @@
 *.mov
 *.zip
 *.fbx
+*.pem
 
 **/logs
 **/bun.lockb

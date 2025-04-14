@@ -6,6 +6,8 @@ edition = "2021"
 [dependencies]
 anthropic = "0.0.8"
 axum = { version = "0.8.1", features = ["multipart", "ws"] }
+axum-extra = { version = "0.10.1" }
+axum-server = { version = "0.7.2", features = ["tls-rustls"] }
 axum_typed_multipart = "0.15.1"
 futures = "0.3.31"
 openssl = { version = "0.10.71", features = [
@@ -13,6 +15,7 @@ openssl = { version = "0.10.71", features = [
 ] } # This is more docker environment
 project-root = "0.2.2"
 reqwest = { version = "0.12.12" }
+rustls = { version = "0.23", features = ["ring"] }
 scraper = "0.22.0"
 serde = "1.0.217"
 serde_json = "1.0.138"
