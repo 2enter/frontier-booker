@@ -7,11 +7,7 @@
 
 <div class="full-screen bg bg-cover bg-center"></div>
 
-<ImgBtn
-	src="/ui/buttons/start.webp"
-	class="fixed bottom-[30vh] w-1/2"
-	onclick={sysState.navigate}
-/>
+<ImgBtn src="/ui/buttons/start.png" class="fixed bottom-[30vh] w-1/2" onclick={sysState.navigate} />
 
 <style>
 	.bg {

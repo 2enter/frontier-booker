@@ -9,6 +9,7 @@
 
 	import { ImgBtn } from '@/components';
 	import { getCargoById } from '@/api';
+	import { fade } from 'svelte/transition';
 
 	// declare constants
 	const FRAME_RATE = 30;
@@ -27,6 +28,7 @@
 	let frame = 0;
 	let lastTouch: Touch | null = null;
 	let pendingDotNum = $state(3);
+	let showInfo = $state(true);
 
 	// declare states
 	const [inputState, sysState] = [getInputState(), getSysState()];
@@ -50,10 +52,10 @@
 
 				textInfo = { name: updated.name, description: updated.description };
 				console.table(textInfo);
-				inputState.reset();
+				// inputState.reset();
 				clearInterval(interval);
 				clearInterval(pendingInterval);
-			}, 5000);
+			}, 1000);
 		}
 
 		// declare basic THREE objects
@@ -138,17 +140,31 @@
 	ontouchend={onTouchEnd}
 ></div>
 
-<div
-	class="font-dot-gothic absolute top-40 z-[1200] flex h-fit w-[90%] flex-col gap-2 rounded-xl p-3 text-center text-3xl text-black"
->
-	{#if textInfo}
+{#if textInfo}
+	{#if showInfo}
 		{@const { name, description } = textInfo}
-		<h1 class="text-4xl font-bold">『{name}』</h1>
-		<p class="text-[21px] leading-tight">{description}</p>
-	{:else}
-		圖鑑內文生成中{'.'.repeat(pendingDotNum)}
+		<div in:fade class="full-screen z-[1000] bg-white/30"></div>
+		<ImgBtn
+			src="/ui/buttons/close.png"
+			class="fixed right-24 top-24 z-[2000] size-24"
+			onclick={() => (showInfo = false)}
+		/>
+		<div
+			transition:fade
+			class="font-dot-gothic reel fixed z-[1200] flex h-[70vh] w-[70vw] flex-col items-center justify-start gap-0 rounded-xl px-6 text-3xl text-black/80"
+		>
+			<h1 class="mt-24 text-5xl font-bold">『{name}』</h1>
+			<img src={inputState.resultImgUrl} class="my-[-90px] h-fit w-[39%] rotate-90" alt="" />
+			<p class="max-h-[46%] w-[60%] overflow-y-scroll text-[33px] leading-tight">
+				{description}
+			</p>
+		</div>
 	{/if}
-</div>
+{:else}
+	<div class="font-dot-gothic pointer-events-none fixed z-[1500] text-center text-4xl text-black">
+		圖鑑內文生成中{'.'.repeat(pendingDotNum)}
+	</div>
+{/if}
 
 <div class="full-screen pt-15 flex flex-col items-center justify-between px-12 pb-40 pt-10">
 	<enhanced:img src={SuccessImage} alt="" />
@@ -156,15 +172,22 @@
 </div>
 
 {#if textInfo}
-	<ImgBtn
-		class="fixed bottom-12 z-[3000] w-56"
-		src="/ui/buttons/restart.webp"
-		onclick={() => {
-			window.location.reload();
-		}}
-	/>
+	<div class="center-content fixed bottom-24 z-[3000] flex w-screen gap-12 *:w-56">
+		{#if !showInfo}
+			<ImgBtn src="/ui/buttons/restart.webp" onclick={() => (showInfo = true)} />
+		{/if}
+		<ImgBtn src="/ui/buttons/restart.webp" onclick={() => window.location.reload()} />
+	</div>
 {/if}
 
 <style>
 	@import url('https://fonts.googleapis.com/css2?family=DotGothic16&display=swap');
+
+	.reel {
+		/* background-image: var(--result-url), url('@/assets/ui/layouts/reel.png'); */
+		background-image: url('@/assets/ui/layouts/reel.png');
+		background-position: center;
+		background-size: contain;
+		background-repeat: no-repeat;
+	}
 </style>

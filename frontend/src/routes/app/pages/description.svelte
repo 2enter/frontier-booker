@@ -10,7 +10,7 @@
 
 	onMount(() => {
 		const interval = setInterval(() => {
-			if (line === 7) {
+			if (line === 8) {
 				clearInterval(interval);
 				return;
 			}
@@ -25,10 +25,10 @@
 </script>
 
 {#each { length: line + 1 } as _, i}
-	<enhanced:img
+	<img
 		in:fade
-		src={getImageSrc(`/ui/texts/description_page/${i}.webp`)}
-		class="full-screen m-auto"
+		src={getImageSrc(`/ui/texts/description_page/${i}.png`).img.src}
+		class="fixed left-4 top-0 h-screen w-[90%]"
 		alt={i.toString()}
 	/>
 {/each}
