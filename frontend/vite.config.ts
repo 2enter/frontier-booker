@@ -8,7 +8,7 @@ dotenv.config({ path: '../.env' });
 
 const { BACKEND_PORT, BACKEND_HOST } = process.env;
 
-const API_BASE_URL = `http://${BACKEND_HOST ?? 'localhost'}:${BACKEND_PORT ?? 3000}`;
+const API_BASE_URL = `https://${BACKEND_HOST ?? 'localhost'}:${BACKEND_PORT ?? 3000}`;
 
 console.log('API base url:', API_BASE_URL);
 
@@ -19,7 +19,8 @@ export default defineConfig({
 		proxy: {
 			'/api': {
 				target: API_BASE_URL,
-				changeOrigin: true
+				changeOrigin: true,
+				secure: false
 			}
 		},
 		port: 5173,
