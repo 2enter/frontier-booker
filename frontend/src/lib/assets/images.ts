@@ -1,7 +1,7 @@
 import Image from './ui/texts/2enter.webp?enhanced'
 
 export const imageModules = import.meta.glob(
-	'./**/*.webp',
+	'./**/*.{webp,png}',
 	{
 		eager: true,
 		query: {
