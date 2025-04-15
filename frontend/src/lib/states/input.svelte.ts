@@ -4,23 +4,24 @@ import { CargoStatus, CargoType } from '@/types/model'
 
 import { getContext, setContext } from 'svelte';
 import axios from 'axios';
+import { RESULT_TESTING } from '@/config';
 
 const TEST_CARGO = {
-	id: "07af5db7-1ccd-42e3-8882-6fac04c5fb3b",
+	id: "f58ab78b-2964-4e51-8ec1-f40c39b3b3b7",
 	type: CargoType.Cake,
 	createdAt: new Date(),
 	status: CargoStatus.Delivered,
 	paintTime: 30,
 	name: "彩虹絲帶",
 	description: "這是一種由特殊纖維編織而成的柔軟絲帶，在任何光線下都能發出柔和的變幻色彩。它不僅可以用來裝飾和包裝，還具有極強的韌性，能在太空環境中保持穩定性。這種絲帶的獨特之處在於它能根據周圍溫度改變顏色，是太空站最受歡迎的包裝材料之一。",
-}
+};
 
 class InputState {
 	cargoType = $state<ParseEnum<CargoType> | null>(null);
 	drawDuration = $state(0);
 
-	// result = $state<Cargo | null>(TEST_CARGO);
-	result = $state<Cargo | null>();
+	result = $state<Cargo | null>(RESULT_TESTING ? TEST_CARGO : null);
+	// result = $state<Cargo | null>();
 
 	resultImgUrl = $state<string | null>(null);
 

@@ -1,3 +1,5 @@
+const RESULT_TESTING = false;
+
 const COLORS = [
 	{ name: 'red', value: '#EB0018' },
 	{ name: 'orange', value: '#ED6A19' },
@@ -21,6 +23,6 @@ const DEFAULT_CRON_CONFIG = {
 	runOnInit: true
 } as const;
 
-export { COLORS, DEFAULT_CRON_CONFIG };
+export { COLORS, DEFAULT_CRON_CONFIG, RESULT_TESTING };
 
 export type { ColorName };

@@ -1,9 +1,10 @@
+import { RESULT_TESTING } from '@/config';
 import { setContext, getContext } from 'svelte';
 
 class SysState {
 	processing = $state(false);
 	errorMessage = $state<string | null>(null);
-	pageNum = $state<PageNum>(0);
+	pageNum = $state<PageNum>(RESULT_TESTING ? 5 : 0);
 	dialog = $state<HTMLDialogElement>();
 
 	bgNum = $derived.by(() => {
