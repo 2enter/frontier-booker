@@ -1,6 +1,6 @@
 services:
   backend:
-    container_name: backend
+    container_name: ftr_bkr_backend
     restart: always
     build:
       context: .
@@ -18,7 +18,7 @@ services:
 
   db:
     image: postgres:17
-    container_name: db
+    container_name: ftr_bkr_db
     restart: unless-stopped
     env_file:
       - .env
@@ -30,7 +30,7 @@ services:
 
   chromedriver:
     image: spryker/chromedriver
-    container_name: chromedriver
+    container_name: ftr_bkr_chromedriver
     restart: always
     init: true
     ports:
