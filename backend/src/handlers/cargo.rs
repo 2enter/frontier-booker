@@ -81,7 +81,7 @@ pub async fn send_cargo(
         WSMsg::cargo(
             cargo_type,
             id,
-            &format!("http://{host}:{port}/api/storage/texture/{id}.jpg"),
+            &format!("https://{host}:{port}/api/storage/texture/{id}.jpg"),
         ),
         &app_state.ws_sender.clone(),
     );

@@ -61,7 +61,9 @@ impl Cargo {
         id: Uuid,
         value: bool,
     ) -> Result<&str, sqlx::Error> {
-        sqlx::query!("UPDATE cargo SET pending = $1 WHERE id = $2", value, id)
+        sqlx::query("UPDATE cargo SET pending = $1 WHERE id = $2")
+            .bind(value)
+            .bind(id)
             .execute(pool)
             .await
             .map(|_| "Ok")
@@ -122,15 +124,13 @@ impl Cargo {
             id,
         } = &info;
 
-        sqlx::query!(
-            "UPDATE cargo SET name = $1, description = $2 WHERE id = $3",
-            name,
-            description,
-            id
-        )
-        .execute(pool)
-        .await
-        .map(|_| "ok".to_string())
+        sqlx::query("UPDATE cargo SET name = $1, description = $2 WHERE id = $3")
+            .bind(name)
+            .bind(description)
+            .bind(id)
+            .execute(pool)
+            .await
+            .map(|_| "ok".to_string())
     }
 
     pub async fn create(pool: &PgPool, input: CargoInput) -> Self {
