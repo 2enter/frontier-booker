@@ -9,7 +9,7 @@
 
 	import { ImgBtn } from '@/components';
 	import { getCargoById } from '@/api';
-	import { fade } from 'svelte/transition';
+	import { fade, scale } from 'svelte/transition';
 
 	// declare constants
 	const FRAME_RATE = 30;
@@ -27,13 +27,18 @@
 	let threeDom: HTMLDivElement;
 	let frame = 0;
 	let lastTouch: Touch | null = null;
+	let nameDom = $state<HTMLHeadElement>();
 	let pendingDotNum = $state(3);
-	let showInfo = $state(true);
+	let showInfo = $state(false);
 
 	// declare states
 	const [inputState, sysState] = [getInputState(), getSysState()];
 	const cargo = $derived(inputState.result);
 	let textInfo = $state<{ name: string; description: string } | null>();
+
+	$effect(() => {
+		console.log(nameDom?.clientHeight);
+	});
 
 	onMount(async () => {
 		if (!inputState.result) return;
@@ -44,7 +49,7 @@
 			// For testing, skipping the remote data fetching
 			textInfo = { name: cargo.name, description: cargo.description };
 		} else {
-			const pendingInterval = setInterval(() => (pendingDotNum = (pendingDotNum + 1) % 4), 500);
+			const pendingInterval = setInterval(() => (pendingDotNum = (pendingDotNum + 1) % 10), 500);
 			// fetch cargo text info through backend API
 			const interval = setInterval(async () => {
 				const { data: updated } = await getCargoById(id);
@@ -52,9 +57,11 @@
 
 				textInfo = { name: updated.name, description: updated.description };
 				console.table(textInfo);
-				// inputState.reset();
-				clearInterval(interval);
-				clearInterval(pendingInterval);
+				setTimeout(() => {
+					showInfo = true;
+					clearInterval(interval);
+					clearInterval(pendingInterval);
+				});
 			}, 1000);
 		}
 
@@ -91,6 +98,7 @@
 
 		// append THREE to DOM
 		if (threeDom) threeDom.appendChild(renderer.domElement);
+		// threeCanvas = renderer.domElement;
 
 		// add objects to scene
 		scene.add(cargoModel);
@@ -136,6 +144,7 @@
 <div
 	bind:this={threeDom}
 	class="full-screen z-[1000]"
+	hidden={showInfo}
 	ontouchmove={onTouchMove}
 	ontouchend={onTouchEnd}
 ></div>
@@ -143,38 +152,53 @@
 {#if textInfo}
 	{#if showInfo}
 		{@const { name, description } = textInfo}
-		<div in:fade class="full-screen z-[1000] bg-white/30"></div>
+		{@const nameIsLong = (nameDom?.clientHeight ?? 0) > 48}
+		<div transition:fade class="full-screen z-[1000] bg-white/30"></div>
 		<ImgBtn
 			src="/ui/buttons/close.png"
 			class="fixed right-24 top-24 z-[2000] size-24"
 			onclick={() => (showInfo = false)}
 		/>
 		<div
-			transition:fade
-			class="font-dot-gothic reel fixed z-[1200] flex h-[70vh] w-[70vw] flex-col items-center justify-start gap-0 rounded-xl px-6 text-3xl text-black/80"
+			transition:scale={{ duration: 369 }}
+			class="font-dot-gothic reel fixed z-[1200] flex h-[70vh] w-[70vw] flex-col items-center justify-start gap-3 rounded-xl px-6 text-3xl text-black/80"
 		>
-			<h1 class="mt-24 text-5xl font-bold">『{name}』</h1>
-			<img src={inputState.resultImgUrl} class="my-[-90px] h-fit w-[39%] rotate-90" alt="" />
-			<p class="max-h-[46%] w-[60%] overflow-y-scroll text-[33px] leading-tight">
+			<h1 bind:this={nameDom} class="z-[3000] mt-20 max-w-[40vw] text-center text-5xl font-bold">
+				{name}
+			</h1>
+			<img src={inputState.resultImgUrl} class="h-fit w-[39%]" alt="" />
+			<p
+				class="z-[3000] mr-6 w-[67%] rotate-[1deg] overflow-y-scroll rounded-xl leading-tight"
+				style:height="{nameIsLong ? '20' : '26'}%"
+				style:text-size="{nameIsLong ? '25' : '33'}px"
+			>
 				{description}
 			</p>
 		</div>
 	{/if}
 {:else}
-	<div class="font-dot-gothic pointer-events-none fixed z-[1500] text-center text-4xl text-black">
-		圖鑑內文生成中{'.'.repeat(pendingDotNum)}
+	<div
+		class="font-dot-gothic pointer-events-none fixed top-64 z-[1500] w-full bg-black/90 p-2.5 text-center text-4xl text-white"
+	>
+		{'·'.repeat(pendingDotNum)}圖鑑內文生成中{'·'.repeat(pendingDotNum)}
 	</div>
 {/if}
 
-<div class="full-screen pt-15 flex flex-col items-center justify-between px-12 pb-40 pt-10">
-	<enhanced:img src={SuccessImage} alt="" />
-	<enhanced:img src={HeadupImage} alt="" />
-</div>
+{#if !showInfo}
+	<div class="full-screen pt-15 flex flex-col items-center justify-between px-12 pb-44 pt-10">
+		<enhanced:img src={SuccessImage} alt="" />
+		<enhanced:img src={HeadupImage} alt="" />
+	</div>
+{/if}
 
 {#if textInfo}
-	<div class="center-content fixed bottom-24 z-[3000] flex w-screen gap-12 *:w-56">
+	<div class="center-content fixed bottom-20 z-[3000] flex w-screen gap-12 *:w-56">
 		{#if !showInfo}
-			<ImgBtn src="/ui/buttons/restart.webp" onclick={() => (showInfo = true)} />
+			<ImgBtn
+				src="/ui/buttons/open_reel.png"
+				class="mt-4 scale-105 opacity-80"
+				onclick={() => (showInfo = true)}
+			/>
 		{/if}
 		<ImgBtn src="/ui/buttons/restart.webp" onclick={() => window.location.reload()} />
 	</div>
