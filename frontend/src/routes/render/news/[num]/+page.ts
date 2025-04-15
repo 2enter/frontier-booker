@@ -12,7 +12,7 @@ export const load = async ({ params }) => {
 };
 
 export const entries: EntryGenerator = () => {
-	return [0, 1].map((n) => {
+	return [0, 1, 2, 3, 4].map((n) => {
 		return { num: n.toString() };
 	});
 };
