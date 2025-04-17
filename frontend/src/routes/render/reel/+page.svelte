@@ -29,15 +29,24 @@
 <div class="center-content full-screen bg-black px-3 text-white">
 	<div class="flex w-fit flex-row gap-2 overflow-x-hidden">
 		{#each cargoes as { id, name, createdAt }}
-			<div class="flex h-72 w-48 flex-col items-center">
+			<div class="*:font-dot-gothic flex h-72 w-48 flex-col items-center">
 				<span class:text-black={!asMask}>{moment(createdAt).format('YY/MM/DD HH:mm')}</span>
 				<div class="size-48 bg-white">
 					{#if !asMask}
 						<img src="/api/storage/texture/{id}.jpg" class="size-48" alt="" />
 					{/if}
 				</div>
-				<span class:text-black={!asMask} class="text-center text-xl">{name}</span>
+				<span
+					class:text-black={!asMask}
+					class="max-w-48 overflow-hidden whitespace-nowrap text-center text-2xl"
+				>
+					{name}
+				</span>
 			</div>
 		{/each}
 	</div>
 </div>
+
+<style>
+	@import url('https://fonts.googleapis.com/css2?family=DotGothic16&display=swap');
+</style>
