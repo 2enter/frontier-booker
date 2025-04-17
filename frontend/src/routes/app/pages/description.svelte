@@ -28,7 +28,7 @@
 	<img
 		in:fade
 		src={getImageSrc(`/ui/texts/description_page/${i}.png`).img.src}
-		class="fixed left-4 top-0 h-screen w-[90%]"
+		class="fixed left-4 top-0 h-screen w-[96%]"
 		alt={i.toString()}
 	/>
 {/each}

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { CargoType } from '@/types/model';
-	import SelectCargoImage from '@/assets/ui/texts/select_cargo.webp?enhanced';
+	import SelectCargoImage from '@/assets/ui/texts/select_cargo.png?enhanced';
 
 	import { getInputState, getSysState } from '@/states';
 	import { ImgBtn } from '@/components';

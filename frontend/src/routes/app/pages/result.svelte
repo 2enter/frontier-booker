@@ -2,7 +2,6 @@
 	import * as THREE from 'three';
 	import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 	import SuccessImage from '@/assets/ui/texts/upload_success.webp?enhanced';
-	import HeadupImage from '@/assets/ui/texts/head_up.webp?enhanced';
 
 	import { getSysState, getInputState } from '@/states';
 	import { onDestroy, onMount } from 'svelte';
@@ -10,6 +9,7 @@
 	import { ImgBtn } from '@/components';
 	import { getCargoById } from '@/api';
 	import { fade, scale } from 'svelte/transition';
+	import { getImageSrc } from '@/assets/images';
 
 	// declare constants
 	const FRAME_RATE = 30;
@@ -185,22 +185,22 @@
 {/if}
 
 {#if !showInfo}
-	<div class="full-screen pt-15 flex flex-col items-center justify-between px-12 pb-44 pt-10">
+	<div class="full-screen pt-15 flex flex-col items-center justify-between px-12 pb-52 pt-10">
 		<enhanced:img src={SuccessImage} alt="" />
-		<enhanced:img src={HeadupImage} alt="" />
+		<div class="flex flex-col">
+			{#each { length: 3 } as _, n}
+				<enhanced:img src={getImageSrc(`/ui/texts/headup_${n}.png`)} class="h-12 w-auto" alt="" />
+			{/each}
+		</div>
 	</div>
 {/if}
 
 {#if textInfo}
-	<div class="center-content fixed bottom-20 z-[3000] flex w-screen gap-12 *:w-56">
+	<div class="center-content fixed bottom-20 z-[3000] flex w-screen gap-12 opacity-80 *:w-64">
 		{#if !showInfo}
-			<ImgBtn
-				src="/ui/buttons/open_reel.png"
-				class="mt-4 scale-105 opacity-80"
-				onclick={() => (showInfo = true)}
-			/>
+			<ImgBtn src="/ui/buttons/open_reel.png" onclick={() => (showInfo = true)} />
 		{/if}
-		<ImgBtn src="/ui/buttons/restart.webp" onclick={() => window.location.reload()} />
+		<ImgBtn src="/ui/buttons/restart.png" onclick={() => window.location.reload()} />
 	</div>
 {/if}
 
