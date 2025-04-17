@@ -1,7 +1,7 @@
 use scraper::{Html, Selector};
 use std::error::Error;
 
-const URL: &str = "https://www.cwa.gov.tw/V8/C/W/Observe/MOD/24hr/C0C70.html";
+const URL: &str = "https://www.cwa.gov.tw/V8/C/W/Observe/MOD/24hr/C0C63.html";
 
 pub async fn is_raining() -> Result<bool, Box<dyn Error>> {
     let html = reqwest::get(URL).await?.text().await?;
