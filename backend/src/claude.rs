@@ -24,7 +24,7 @@ struct ClaudeResponse {
     content: Vec<ContentBlock>,
 }
 
-fn gen_message_params(base64_image: &str) -> Value {
+fn _gen_message_params(base64_image: &str) -> Value {
     json!({
         "model": "claude-3-5-sonnet-latest",
         "max_tokens": 1024,
